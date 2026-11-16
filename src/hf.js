@@ -1,4 +1,4 @@
-// Answers come from the "proxy" Vercel project (Desktop/Lifeverse/proxy, api/hf-chat.ts), which holds
+// Answers come from proxy/hf-chat.ts, served by the "proxy" Vercel project, which holds
 // the Hugging Face token (env HF_TOKEN), pins the provider (deepinfra) and rate-limits. No secret here.
 const CHAT_URL = import.meta.env.VITE_CHAT_URL || 'https://proxy-xi-pied.vercel.app/api/hf-chat'
 
@@ -18,7 +18,7 @@ export async function chat(body, signal) {
 // Settings menu choices, cheapest first. Rules: 131k+ context on deepinfra, ~$0.02-0.05/M in,
 // non-reasoning only (reasoning models like gpt-oss, Qwen3, Granite 4.2 spend max_tokens on hidden thinking).
 // Prices/context checked 2026-11-15 via https://router.huggingface.co/v1/models
-// The proxy refuses any other model: keep in sync with MODELS in Lifeverse/proxy/api/hf-chat.ts
+// The proxy refuses any other model: keep in sync with MODELS in proxy/hf-chat.ts
 const ALLOWED = [
   'meta-llama/Llama-3.1-8B-Instruct', // in 0.02 / out 0.05
   'google/gemma-3-4b-it', //             in 0.05 / out 0.10

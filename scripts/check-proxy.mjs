@@ -9,8 +9,12 @@ const ok = { model: 'meta-llama/Llama-3.1-8B-Instruct', messages: [{ role: 'user
 
 const pre = await fetch(URL_, { method: 'OPTIONS', headers: { Origin: 'http://localhost:5173', 'Access-Control-Request-Method': 'POST' } })
 assert.equal(pre.headers.get('access-control-allow-origin'), 'http://localhost:5173', 'dev origin must be allowed')
-const other = await fetch(URL_, { method: 'OPTIONS', headers: { Origin: 'https://evil.example' } })
-assert.equal(other.headers.get('access-control-allow-origin'), null, 'unknown origins must not be allowed')
+const site = await fetch(URL_, { method: 'OPTIONS', headers: { Origin: 'https://debaprasad-dez.github.io', 'Access-Control-Request-Method': 'POST' } })
+assert.equal(site.headers.get('access-control-allow-origin'), 'https://debaprasad-dez.github.io', 'the Pages site must be allowed')
+for (const origin of ['https://evil.example', 'https://someone.vercel.app']) {
+  const other = await fetch(URL_, { method: 'OPTIONS', headers: { Origin: origin } })
+  assert.equal(other.headers.get('access-control-allow-origin'), null, `must not allow ${origin}`)
+}
 
 for (const body of [{ ...ok, model: 'meta-llama/Llama-3.1-405B-Instruct' }, { ...ok, max_tokens: 4096 }, { ...ok, messages: [] }]) {
   const res = await post(body)
